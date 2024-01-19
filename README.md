@@ -1,16 +1,13 @@
-# Docker template for PHP projects
-This repository provides a starting template for PHP application development.
+## logins
 
-It contains:
-* NGINX webserver
-* PHP FastCGI Process Manager with PDO MySQL support
-* MariaDB (GPL MySQL fork)
-* PHPMyAdmin
+Login admin:
+    - username: Jesse321
+    - password: WEED
+Login customer:
+    - username: waltuh
+    -password: finger
 
-## Installation
-
-1. Install Docker Desktop on Windows or Mac, or Docker Engine on Linux.
-1. Clone the project
+customers logins can be made in the application itself so you dont have to use the one provided.
 
 ## Usage
 
