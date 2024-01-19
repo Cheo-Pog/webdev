@@ -1,0 +1,13 @@
+.container {
+    border: black 1px solid;
+}
+.card-body {
+    border: black 1px solid;
+}
+.card-footer {
+    border: black 1px solid;
+    background-color: lightblue;
+}
+body {
+    background-color: pink;
+}
