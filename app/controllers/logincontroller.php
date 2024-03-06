@@ -1,9 +1,11 @@
 <?php
+namespace App\Controllers;
+
 require_once __DIR__ . '/../services/productservice.php';
 require_once __DIR__ . '/../services/loginservice.php';
 class LoginController{
 
-    public function login() {
+    public function index() {
         require_once __DIR__ . "/../views/logins/login.php";
     }
 

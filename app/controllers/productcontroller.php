@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../services/productservice.php';
+namespace App\Controllers;
+
+use app\Services\ProductService;
 
 class ProductController{
     private $ProductService;

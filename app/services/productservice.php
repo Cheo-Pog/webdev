@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../repositories/productrepository.php';
+namespace App\Services;
+
+use App\Repositories\ProductRepository;
 class ProductService {
 
     private $ProductRepository;

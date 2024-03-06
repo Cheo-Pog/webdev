@@ -1,4 +1,5 @@
 <?php
+namespace App\Modules;
 
      class Product{
     public $id;

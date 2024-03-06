@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../modules/login.php';
+namespace App\Repositories;
+
+use PDO;
 class LoginRepository{
 
     private $connection;   

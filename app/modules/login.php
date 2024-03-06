@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Modules;
 class Login{
     private $id;
     private $username;

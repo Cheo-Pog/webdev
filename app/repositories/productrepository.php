@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . '/../modules/product.php';
-require_once __DIR__ . '/../modules/login.php';
-require_once __DIR__ . '/../modules/order.php';
+namespace App\Repositories;
+
+use App\Modules\Product;
+use PDO;
 class ProductRepository
 {
 
@@ -16,7 +17,7 @@ class ProductRepository
     {
         $statement = $this->connection->prepare("SELECT * FROM products");
         $statement->execute();
-        $statement->setFetchMode(PDO::FETCH_CLASS, "Product");
+        $statement->setFetchMode(PDO::FETCH_CLASS, Product::class);
         return $statement->fetchAll();
     }
 
@@ -24,7 +25,7 @@ class ProductRepository
     {
         $statement = $this->connection->prepare("SELECT * FROM products WHERE id = :id");
         $statement->execute(['id' => $id]);
-        $statement->setFetchMode(PDO::FETCH_CLASS, "Product");
+        $statement->setFetchMode(PDO::FETCH_CLASS, Product::class);
         return $statement->fetch();
     }
 
@@ -32,7 +33,7 @@ class ProductRepository
     {
         $statement = $this->connection->prepare("SELECT * FROM products WHERE category = :category");
         $statement->execute(['category' => $category]);
-        $statement->setFetchMode(PDO::FETCH_CLASS, "Product");
+        $statement->setFetchMode(PDO::FETCH_CLASS, Product::class);
         return $statement->fetchAll();
     }
 
@@ -62,7 +63,7 @@ class ProductRepository
     {
         $statement = $this->connection->prepare("SELECT DISTINCT category FROM products");
         $statement->execute();
-        $statement->setFetchMode(PDO::FETCH_CLASS, "Product");
+        $statement->setFetchMode(PDO::FETCH_CLASS, Product::class);
         return $statement->fetchAll();
     }
 
