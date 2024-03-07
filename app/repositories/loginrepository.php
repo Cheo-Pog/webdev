@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Modules\Login;
 use PDO;
 class LoginRepository{
 
@@ -10,9 +11,15 @@ class LoginRepository{
         $this->connection =  new PDO("mysql:host=mysql;dbname=developmentdb", "developer", "secret123");
     }
 
-    public function AddNewLogin($username, $password){
-        $statement = $this->connection->prepare("INSERT INTO Login (username, password) VALUES (:username, :password)");
-        $statement->execute(['username' => $username, 'password' => $password]);
+    public function AddNewLogin($email, $firstname, $lastname, $hash){
+        $statement = $this->connection->prepare("INSERT INTO Login (email, firstname, lastname, password) VALUES (:email, :firstname, :lastname, :password)");
+        $statement->execute(['email' => $email, 'firstname' => $firstname, 'lastname' => $lastname, 'password' => $hash]);
+    }
+    public function GetLogin($email){
+        $statement = $this->connection->prepare("SELECT id, email, firstname, lastname, password FROM Login WHERE email = :email");
+        $statement->execute(['email' => $email]);
+        $statement->setFetchMode(PDO::FETCH_CLASS, Login::class);
+        return $statement->fetch();
     }
 
     public function GetAllLogins(){

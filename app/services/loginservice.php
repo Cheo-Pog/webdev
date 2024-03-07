@@ -12,20 +12,23 @@ class LoginService
         $this->loginRepository = new LoginRepository;
     }
 
+    public function LoginUser($email, $password)
+    {
+        $user = $this->loginRepository->GetLogin($email);
+        if (password_verify($password, $user->password)) {
+            return $user;
+        }
+    }
+
     public function GetAllLogins()
     {
         return $this->loginRepository->GetAllLogins();
     }
 
-    public function AddNewLogin($username, $password)
+    public function AddNewLogin($email, $firstname, $lastname, $password)
     {
-        $check = $this->loginRepository->GetLoginByUsername($username);
-        if ($check == null) {
-            $this->loginRepository->AddNewLogin($username, $password);
-            return false;
-        } else {
-            return true;
-        }
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $this->loginRepository->AddNewLogin($email, $firstname, $lastname, $hash);
     }
     public function promoteUser($id)
     {

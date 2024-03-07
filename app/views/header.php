@@ -1,6 +1,6 @@
 <?php
 
-use app\services\ProductService;
+use App\Services\ProductService;
 
 ?>
 
@@ -43,7 +43,7 @@ use app\services\ProductService;
                             foreach ($categories as $category) {
                                 ?>
                             <li><a class="dropdown-item"
-                                    href="http://localhost/product/?category=<?= $category->category ?>">
+                                    href="http://localhost/product?category=<?= $category->category ?>">
                                     <?= $category->category ?>
                                 </a></li>
                             <?php
@@ -57,8 +57,8 @@ use app\services\ProductService;
                     <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="dropdown"
                         data-bs-target="#exampleModal">Login</button>
                     <ul class="dropdown-menu float_end dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/login/">login</a></li>
-                        <li><a class="dropdown-item" href="/login/register">register</a></li>
+                        <li><a class="dropdown-item" href="/login">login</a></li>
+                        <li><a class="dropdown-item" href="/login/register/">register</a></li>
                     </ul>
                     <?php else: ?>
                     <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="dropdown"
@@ -66,8 +66,8 @@ use app\services\ProductService;
                         <?= $_SESSION['currentUser']->firstname; ?>
                     </button>
                     <ul class="dropdown-menu float_end dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/user/edit">profile</a></li>
-                        <li><a class="dropdown-item" href="/user/logout">logout</a></li>
+                        <li><a class="dropdown-item" href="/login/profile/">profile</a></li>
+                        <li><a class="dropdown-item" href="/login/LogoutUser">logout</a></li>
                     </ul>
                     <?php endif; ?>
                 </ul>
