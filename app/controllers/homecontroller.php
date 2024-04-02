@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use App\Services\ProductService;
 
 require_once __DIR__ . '/../services/productservice.php';
 

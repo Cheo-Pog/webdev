@@ -1,21 +1,4 @@
-<?php
-require_once __DIR__ . '/../../modules/login.php';
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>products</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../../style.css">
-</head>
-
-<body>
-    <!--include the navbar COPY PASTE THIS-->
-    <?php include '../Qol/navbar.php'; ?>
+<?php include __DIR__ . '/../header.php'; ?>
     <div class=container>
         <div class="row">
             <h1 class="col-12 text-center">Here are some of my <?php echo $products[0]->category; ?>:</h1>
@@ -36,7 +19,7 @@ require_once __DIR__ . '/../../modules/login.php';
                                 <span class="h4">
                                     € <?= number_format($product->price, 2, '.', ',') ?> 
                                 </span>
-                                <a href="#" onclick="onClick(<?= $product->id ?>)" class="btn btn-primary">+</a>
+                                <a href="product/addtocart/id?<?= $product->id ?>" class="btn btn-primary" id="add">+</a>
                             </div>
                         </div>
                     </div>
@@ -46,17 +29,28 @@ require_once __DIR__ . '/../../modules/login.php';
             ?>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script>
-        function onClick(productId){
-            if(<?php echo isset($_SESSION['currentuser']) ? 1 : 0 ?> == 0){
-                alert("You need to be logged in to add to cart");
-            }
-            else{
-                location.href = "http://localhost/addtocart/?productId=" + productId;
-            }
+<script>
+    document.getElementById('add').addEventListener('click', function(event){
+        event.preventDefault();
+        fetch('product/addtocart'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: <?= $product->id ?>
+            }),
         }
-    </script>
-</body>
-</body>
-</html>
+        .then(response => response.json())
+        .then(data => {
+                if (response.ok) {
+                    window.location.href = '/';
+                } else {
+                    alert('Login failed');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+</script>

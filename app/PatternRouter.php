@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Error;
 
 class PatternRouter
@@ -12,24 +11,13 @@ class PatternRouter
 
         $uriSegments = explode('/', $uriWithoutQueryParameters);
         $baseSegment = $uriSegments[0] === '' ? 'home' : $uriSegments[0];
-        $isApiRoute = $baseSegment === 'api';
-        $isAdminRoute = $baseSegment === 'admin';
+       
+        $controllerNamespace = "App\\Controllers\\";
 
-        if (($isApiRoute || $isAdminRoute) && empty($uriSegments[1])) {
-            http_response_code(404);
-            return;
-        }
+        $controllerName = $controllerNamespace . ucfirst($uriSegments[0] ?: 'home') . 'Controller';
+        $methodName = $uriSegments[1] ?? 'index';
 
-        $controllerNamespace = match ($baseSegment) {
-            'admin' => "App\\Controllers\\admin\\",
-            'api' => "App\\Api\\Controllers\\",
-            default => "App\\Controllers\\",
-        };
-
-        $controllerName = $controllerNamespace . ucfirst($uriSegments[$isApiRoute || $isAdminRoute ? 1 : 0] ?: 'home') . 'Controller';
-        $methodName = $uriSegments[$isApiRoute || $isAdminRoute ? 2 : 1] ?? 'index';
-
-        if (!class_exists($controllerName) || !method_exists($controllerName, $methodName)) {
+        if (!class_exists($controllerName)){
             http_response_code(404);
             return;
         }
