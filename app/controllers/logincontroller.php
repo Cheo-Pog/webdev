@@ -18,33 +18,41 @@ class LoginController
 
     public function register()
     {
-        require_once __DIR__ . "/../views/logins/register.php";
-    }
-    public function LoginUser()
-    {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $user = $this->LoginService->LoginUser($email, $password);
-        if ($user != null) {
-            $_SESSION['currentUser'] = $user;
-            header("Location: /");
-        } else {
-            echo "Invalid email or password";
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            require_once __DIR__ . "/../views/logins/register.php";
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $email = $data['email'];
+            $firstname = $data['firstname'];
+            $lastname = $data['lastname'];
+            $password = $data['password'];
+            if ($this->LoginService->AddNewLogin($email, $firstname, $lastname, $password)) {
+                http_response_code(200);
+            } else {
+                http_response_code(400);
+            }
         }
     }
-    public function RegisterUser()
+    public function Login()
     {
-        $email = $_POST['email'];
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-        $password = $_POST['password'];
-        $rpassword = $_POST['rpassword'];
-        if ($password == $rpassword) {
-            $this->LoginService->AddNewLogin($email, $firstname, $lastname, $password);
-            header("Location: /login");
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            require_once __DIR__ . "/../views/logins/login.php";
         }
-        else {
-            echo "Passwords do not match";
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $email = $data['email'];
+            $password = $data['password'];
+
+            $user = $this->LoginService->LoginUser($email, $password);
+            if ($user != null) {
+                $_SESSION['currentUser'] = $user;
+                http_response_code(200);
+            } else {
+                http_response_code(400);
+            }
         }
     }
     public function LogoutUser()

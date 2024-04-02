@@ -1,8 +1,8 @@
 <?php
 include __DIR__ . '/../header.php';
 ?>
-<main class="form-signin w-100 m-auto container">
-    <form action='/login/LoginUser' method='post' ?>
+<div class="container">
+    <form id="login-form">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
         <div class="form-floating">
             <input type="text" class="form-control" id="email" name="email" placeholder="email">
@@ -21,9 +21,35 @@ include __DIR__ . '/../header.php';
         <button class="btn btn-primary w-100 py-2" id="submitButton" type="submit">Sign in</button>
         <p class="mt-5 mb-3 text-muted">Don't have an account? <a href="/login/register">Sign up</a></p>
     </form>
-</main>
+</div>
 
 <script>
+    document.getElementById(login - form).addEventListener('submit', function (event) {
+        event.preventDefault();
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        login(email, password);
+    });
 
+    async function login(email, password) {
+        const response = await fetch('/login/LoginUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(email, password),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (response.ok) {
+                    window.location.href = '/';
+                } else {
+                    alert('Login failed');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 </script>
 <?php include __DIR__ . '/../footer.php'; ?>

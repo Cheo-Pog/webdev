@@ -74,4 +74,3 @@ use App\Services\ProductService;
             </div>
         </div>
     </nav>
-    <div class="">
