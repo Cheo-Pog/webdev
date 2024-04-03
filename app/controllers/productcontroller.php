@@ -21,8 +21,17 @@ class ProductController
 
     public function manageproduct()
     {
-        $products = $this->ProductService->getAllProducts();
-        require_once __DIR__ . "/../views/products/manageproduct.php";
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $products = $this->ProductService->getAllProducts();
+            require_once __DIR__ . "/../views/products/manageproduct.php";
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $id = $data['id'];
+
+            
+        }
     }
     public function addproduct()
     {
