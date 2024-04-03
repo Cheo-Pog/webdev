@@ -21,7 +21,7 @@ include __DIR__ . '/../header.php';
                         <p>category</p>
                     </div>
                     <div class="col-2">
-                        <button class="btn btn-primary" onClick="Add()">Add product</button>
+                        <a class="btn btn-primary" href="">Add product</a>
                     </div>
                 </div>
             </div>
@@ -46,10 +46,10 @@ include __DIR__ . '/../header.php';
                         <p><?php echo $product->category; ?></p>
                     </div>
                     <div class="col-1">
-                        <button class="btn btn-primary" onClick="Edit(<?= $product->id ?>)">edit</button>
+                        <a class="btn btn-primary" href="">edit</a>
                     </div>
                     <div class="col-1">
-                        <button class="btn btn-danger" onClick="Remove(<?= $product->id ?>)">remove</button>
+                        <a class="btn btn-danger" href="">remove</a>
                     </div>
                 </div>
             </div>
@@ -59,15 +59,4 @@ include __DIR__ . '/../header.php';
     </div>
 </div>
 <script>
-function Add(){
-    window.location.href = "http://localhost/addproduct";
-}
-function Remove($id){
-    window.location.href = "http://localhost/removeproduct/?productId=" + $id;
-}
-function Edit($id){
-    window.location.href = "http://localhost/editproduct/?productId=" + $id;
-}
 </script>
-</body>
-</html>
