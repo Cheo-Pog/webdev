@@ -24,11 +24,18 @@ class LoginController
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = json_decode(file_get_contents('php://input'), true);
+
+            if(!isset($data['email'], $data['firstname'], $data['lastname'], $data['password']) || empty($data['email']) || empty($data['firstname']) || empty($data['lastname']) || empty($data['password'])){
+                http_response_code(400);
+                return;
+            }
             $email = $data['email'];
             $firstname = $data['firstname'];
             $lastname = $data['lastname'];
             $password = $data['password'];
-            if ($this->LoginService->AddNewLogin($email, $firstname, $lastname, $password)) {
+            $check = $this->LoginService->getLoginByEmail($email);
+            if ($check->email != $email ) {
+                $this->LoginService->AddNewLogin($email, $firstname, $lastname, $password);
                 http_response_code(200);
             } else {
                 http_response_code(400);
@@ -43,6 +50,10 @@ class LoginController
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = json_decode(file_get_contents('php://input'), true);
+            if(!isset($data['email'], $data['password']) || empty($data['email']) || empty($data['password'])){
+                http_response_code(400);
+                return;
+            }
             $email = $data['email'];
             $password = $data['password'];
 

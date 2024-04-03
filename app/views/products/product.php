@@ -46,7 +46,7 @@
                 if (response.ok) {
                     window.location.href = '/';
                 } else {
-                    alert('Login failed');
+                    alert('failed to add to cart');
                 }
             })
             .catch((error) => {

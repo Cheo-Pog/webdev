@@ -18,11 +18,16 @@ class LoginService
         if (password_verify($password, $user->password)) {
             return $user;
         }
+        return false;
     }
 
     public function GetAllLogins()
     {
         return $this->loginRepository->GetAllLogins();
+    }
+    public function GetLoginByEmail($email)
+    {
+        return $this->loginRepository->GetLogin($email);
     }
 
     public function AddNewLogin($email, $firstname, $lastname, $password)
