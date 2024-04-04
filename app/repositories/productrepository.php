@@ -1,16 +1,16 @@
 <?php
 namespace App\Repositories;
 
+use App\Repositories\Repository;
 use App\Modules\Product;
+use App\Modules\Category;
 use PDO;
-class ProductRepository
+use Exception;
+class ProductRepository extends Repository
 {
-
-    private $connection;
-
     public function __construct()
     {
-        $this->connection = new PDO("mysql:host=mysql;dbname=developmentdb", "developer", "secret123");
+        parent::__construct();
     }
 
     public function getAllProducts()
@@ -31,7 +31,7 @@ class ProductRepository
 
     public function getProductByCategory($category)
     {
-        $statement = $this->connection->prepare("SELECT * FROM products WHERE category = :category");
+        $statement = $this->connection->prepare("SELECT products.id, products.name, products.price, products.description, products.image, category.name as category FROM products join category on products.category = category.id WHERE category.name = :category");
         $statement->execute(['category' => $category]);
         $statement->setFetchMode(PDO::FETCH_CLASS, Product::class);
         return $statement->fetchAll();
@@ -59,28 +59,35 @@ class ProductRepository
             throw new Exception("Failed to upload file.");
         }
     }
-    public function getUniqueCategories()
-    {
-        $statement = $this->connection->prepare("SELECT DISTINCT category FROM products");
-        $statement->execute();
-        $statement->setFetchMode(PDO::FETCH_CLASS, Product::class);
-        return $statement->fetchAll();
-    }
+    public function getCategories(): array
+{
+    $statement = $this->connection->prepare("SELECT id, name FROM category");
+    $statement->setFetchMode(PDO::FETCH_CLASS, Category::class);
+    $statement->execute();
+    return $statement->fetchAll();
+}
+
 
     public function addToCart($id, $userid)
-    {
+    {  
         $cart = $this->getCartByUserId($userid);
         if ($cart != null) {
             foreach ($cart as $item) {
                 if ($item->productId == $id) {
+                    $quantity = $item->quantity + 1;
                     $statement = $this->connection->prepare("UPDATE shoppingcart SET quantity = :quantity WHERE productid = :productid AND userid = :userid");
-                    $statement->execute(['productid' => $id, 'userid' => $userid, 'quantity' => $item->quantity + 1]);
+                    $statement->bindParam(':quantity', $quantity);
+                    $statement->bindParam(':productid', $id);
+                    $statement->bindParam(':userid', $userid);
+                    $statement->execute();
                     return;
                 }
             }
         }
-            $statement = $this->connection->prepare("INSERT INTO shoppingcart (productid, userid, quantity) VALUES (:productid, :userid, :quantity)");
-            $statement->execute(['productid' => $id, 'userid' => $userid, 'quantity' => 1]); 
+            $statement = $this->connection->prepare("INSERT INTO shoppingcart (productid, userid) VALUES (:productid, :userid)");
+            $statement->bindParam(':productid', $id);
+            $statement->bindParam(':userid', $userid);
+            $statement->execute(); 
     }
     public function removeFromCart($orderId, $userid){
         $statement = $this->connection->prepare("DELETE FROM shoppingcart WHERE orderId = :orderId AND userId = :userid");

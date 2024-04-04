@@ -11,11 +11,12 @@ class PatternRouter
 
         $uriSegments = explode('/', $uriWithoutQueryParameters);
         $baseSegment = $uriSegments[0] === '' ? 'home' : $uriSegments[0];
+        $isApi = $baseSegment === 'api';
        
-        $controllerNamespace = "App\\Controllers\\";
+        $isApi ? $controllerNamespace = 'App\\Api\\Controllers\\' : $controllerNamespace = 'App\\Controllers\\';
 
-        $controllerName = $controllerNamespace . ucfirst($uriSegments[0] ?: 'home') . 'Controller';
-        $methodName = $uriSegments[1] ?? 'index';
+        $isApi ? $controllerName = $controllerNamespace . ucfirst($uriSegments[1]) . 'Controller' : $controllerName = $controllerNamespace . ucfirst($baseSegment) . 'Controller';
+        $isApi ? $methodName = $uriSegments[2] ?? 'index' : $methodName = $uriSegments[1] ?? 'index';
 
         if (!class_exists($controllerName)){
             http_response_code(404);

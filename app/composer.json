@@ -9,7 +9,9 @@
             "App\\Modules\\": "./modules",
             "App\\Views\\": "./views",
             "App\\Services\\": "./services",
-            "App\\Repositories\\": "./repositories"
+            "App\\Repositories\\": "./repositories",
+            "App\\Api\\": "./api",
+            "App\\Api\\Controllers\\": "./api/controllers"
         }
     }
 }

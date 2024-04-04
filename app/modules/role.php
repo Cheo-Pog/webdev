@@ -2,7 +2,7 @@
 namespace App\Modules;
 
 enum Role {
-    case Guest = 1;
-    case User = 2;
-    case Admin = 3;
+    case Guest = 0;
+    case User = 1;
+    case Admin = 2;
 }

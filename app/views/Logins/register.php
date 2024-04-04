@@ -73,6 +73,9 @@
     });
     if (response.ok) {
       window.location.href = '/login';
+    } else if (response.status === 401) {
+      document.getElementById("alert").setAttribute("style", "display: block;");
+      document.getElementById("error").innerText = 'Email already in use';
     } else {
       document.getElementById("alert").setAttribute("style", "display: block;");
       document.getElementById("error").innerText = 'Registration failed';

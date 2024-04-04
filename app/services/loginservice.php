@@ -1,50 +1,33 @@
 <?php
 namespace App\Services;
+use App\Repositories\UserRepository;
+use App\Modules\User;
 
-use App\Repositories\LoginRepository;
-
-class LoginService
-{
-    private $loginRepository;
+class Loginservice{
+    private $UserRepository;
 
     public function __construct()
     {
-        $this->loginRepository = new LoginRepository;
+        $this->UserRepository = new UserRepository;
     }
-
-    public function LoginUser($email, $password)
+    public function LoginUser($email, $password) : User | bool
     {
-        $user = $this->loginRepository->GetLogin($email);
+        $user = $this->UserRepository->GetUserByEmail($email);
+        if (!$user) {
+            return false;
+        }
         if (password_verify($password, $user->password)) {
             return $user;
         }
         return false;
     }
-
-    public function GetAllLogins()
-    {
-        return $this->loginRepository->GetAllLogins();
-    }
-    public function GetLoginByEmail($email)
-    {
-        return $this->loginRepository->GetLogin($email);
-    }
-
     public function AddNewLogin($email, $firstname, $lastname, $password)
     {
+        $user = $this->UserRepository->GetUserByEmail($email);
+        if ($user) {
+            return false;
+        }
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $this->loginRepository->AddNewLogin($email, $firstname, $lastname, $hash);
-    }
-    public function promoteUser($id)
-    {
-        $this->loginRepository->promoteUser($id);
-    }
-    public function demoteUser($id)
-    {
-        $this->loginRepository->demoteUser($id);
-    }
-    public function removeUser($id)
-    {  
-         $this->loginRepository->removeUser($id);
+        return $this->UserRepository->AddNewUser($email, $firstname, $lastname, $hash);
     }
 }

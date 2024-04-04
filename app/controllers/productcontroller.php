@@ -2,14 +2,17 @@
 namespace App\Controllers;
 
 use App\Services\ProductService;
+use App\Services\CartService;
 
 class ProductController
 {
     private $ProductService;
+    private $CartService;
 
     public function __construct()
     {
         $this->ProductService = new ProductService();
+        $this->CartService = new CartService();
     }
 
     public function index()
@@ -39,23 +42,5 @@ class ProductController
     {
         $product = $this->ProductService->getProductById($id);
         require_once __DIR__ . "/../views/products/editproduct.php";
-    }
-    public function addToCart()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            require_once __DIR__ . "/../views/products/addtocart.php";
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $data = json_decode(file_get_contents('php://input'), true);
-            $id = $data['id'];
-
-            if (isset($_SESSION['currentuser'])) {
-                $this->ProductService->addToCart($id);
-                http_response_code(200);
-            } else {
-                http_response_code(400);
-            }
-        }
     }
 }

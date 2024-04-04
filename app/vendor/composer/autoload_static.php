@@ -12,7 +12,7 @@ class ComposerStaticInit7b439c4d754eb5c1fd54863ca2fb919c
             'App\\Views\\' => 10,
             'App\\Services\\' => 13,
             'App\\Repositories\\' => 17,
-            'App\\Models\\' => 11,
+            'App\\Modules\\' => 12,
             'App\\Controllers\\' => 16,
             'App\\' => 4,
         ),
@@ -31,9 +31,9 @@ class ComposerStaticInit7b439c4d754eb5c1fd54863ca2fb919c
         array (
             0 => __DIR__ . '/../..' . '/repositories',
         ),
-        'App\\Models\\' => 
+        'App\\Modules\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/models',
+            0 => __DIR__ . '/../..' . '/modules',
         ),
         'App\\Controllers\\' => 
         array (
