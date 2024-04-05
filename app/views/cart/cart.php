@@ -66,7 +66,8 @@ $subtotal = 0; ?>
 <script>
     let subtotal = parseFloat(<?= $subtotal ?>);
 
-    document.getElementById('checkout').addEventListener('click', function () {
+    document.getElementById('checkout').addEventListener('click', function (event) {
+        event.preventDefault();
         checkout();
     });
 

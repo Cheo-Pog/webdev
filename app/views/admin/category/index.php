@@ -2,7 +2,7 @@
 <div class="container">
     <a href="/admin" class="btn btn-primary">Back</a>
     <h1 class="text-center">Category</h1>
-        <a href="/admin/catagory/create" class="btn btn-primary">Create</a>
+    <a href="/api/product/createCategory" class="btn btn-primary">Create</a>
     <table class="table">
         <thead>
             <tr>
@@ -13,21 +13,40 @@
         </thead>
         <tbody>
             <?php foreach ($categories as $category): ?>
-                <tr>
+                <tr id="category-<?= $category->id ?>">
                     <td>
-                        <?php echo $category->id; ?>
+                        <?= $category->id; ?>
                     </td>
                     <td>
-                        <?php echo $category->name; ?>
+                        <?= $category->name; ?>
                     </td>
                     <td>
-                        <a href="/api/product/edit<?php echo $category->id; ?>" class="btn btn-primary">Edit</a>
-                        <a href="/admin/catagory/delete/<?php echo $category->id; ?>" class="btn btn-danger">Delete</a>
+                        <a href="/api/product/editCategory/<?= $category->id; ?>" class="btn btn-primary">Edit</a>
+                        <button value="<?= $category->id ?>" class="btn btn-danger delete">Delete</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+<script>
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('delete')) {
+            event.preventDefault();
+            id = event.target.value;
+            console.log(id);
+            deleteProduct(id);
+        }
+    });
+
+    async function deleteProduct(id) {
+        const response = await fetch(`/api/product/deleteCategory/` + id, {
+            method: 'DELETE',
+        });
+        if (response.ok) {
+            document.getElementById('category-' + id).remove();
+        }
+    }
+</script>
 
 <?php include __DIR__ . "/../../footer.php"; ?>

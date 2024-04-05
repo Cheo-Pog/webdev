@@ -34,11 +34,11 @@
                                 aria-expanded="true">Products</a>
                             <ul class="dropdown-menu">
                                 <?php
-                                foreach ($_SESSION['categories'] as $category) {
+                                foreach ($_SESSION['categories'] as $c) {
                                     ?>
                                     <li><a class="dropdown-item"
-                                            href="http://localhost/product?category=<?= $category->name ?>">
-                                            <?= $category->name ?>
+                                            href="http://localhost/product?category=<?= $c->name ?>">
+                                            <?= $c->name ?>
                                         </a></li>
                                     <?php
                                 }

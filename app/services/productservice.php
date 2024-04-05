@@ -12,8 +12,8 @@ class ProductService {
     public function getAllProducts() {
         return $this->ProductRepository->getAllProducts();
     }
-    public function addProduct($name, $price, $description, $image, $category) {
-        $this->ProductRepository->addProduct($name, $price, $description, $image, $category);
+    public function addProduct($name, $price, $description, $category) {
+        $this->ProductRepository->addProduct($name, $price, $description, $category);
     }
     public function getProductByCategory($category) {
         return $this->ProductRepository->getProductByCategory($category);
@@ -24,5 +24,23 @@ class ProductService {
     public function getCategories(): array
     { 
         return $this->ProductRepository->getCategories();
+    }
+    public function getCategoryById($id){
+        return $this->ProductRepository->getCategoryById($id);
+    }
+    public function editCategory($id, $name){
+        $this->ProductRepository->editCategory($id, $name);
+    }
+    public function addCategory($name){
+        $this->ProductRepository->addCategory($name);
+    }
+    public function editProduct($id, $name, $price, $description, $category){
+        $this->ProductRepository->editProduct($id, $name, $price, $description, $category);
+    }
+    public function removeProduct($id){
+        $this->ProductRepository->removeProduct($id);
+    }
+    public function removeCategory($id){
+        $this->ProductRepository->removeCategory($id);
     }
 }

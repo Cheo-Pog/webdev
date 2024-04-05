@@ -6,6 +6,7 @@ use App\Modules\Product;
 use App\Modules\Category;
 use PDO;
 use Exception;
+
 class ProductRepository extends Repository
 {
     public function __construct()
@@ -32,7 +33,8 @@ class ProductRepository extends Repository
     public function getProductByCategory($category)
     {
         $statement = $this->connection->prepare("SELECT products.id, products.name, products.price, products.description, products.image, category.name as category FROM products join category on products.category = category.id WHERE category.name = :category");
-        $statement->execute(['category' => $category]);
+        $statement->bindParam(':category', $category);
+        $statement->execute();
         $statement->setFetchMode(PDO::FETCH_CLASS, Product::class);
         return $statement->fetchAll();
     }
@@ -40,31 +42,62 @@ class ProductRepository extends Repository
     public function removeProduct($id)
     {
         $statement = $this->connection->prepare("DELETE FROM products WHERE id = :id");
-        $statement->execute(['id' => $id]);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+    }
+    public function removeCategory($id)
+    {
+        $statement = $this->connection->prepare("DELETE FROM category WHERE id = :id");
+        $statement->bindParam(':id', $id);
+        $statement->execute();
     }
 
-    public function editProduct($id, $name, $price, $description, $image, $category)
+    public function editProduct($id, $name, $price, $description, $category)
     {
-        $statement = $this->connection->prepare("UPDATE products SET name = :name, price = :price, description = :description, image = :image, category = :category WHERE id = :id");
-        $statement->execute(['id' => $id, 'name' => $name, 'price' => $price, 'description' => $description, 'image' => $image, 'category' => $category]);
+        $statement = $this->connection->prepare("UPDATE products SET name = :name, price = :price, description = :description, category = :category WHERE id = :id");
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':name', $name);
+        $statement->bindParam(':price', $price);
+        $statement->bindParam(':description', $description);
+        $statement->bindParam(':category', $category);
+        $statement->execute();
     }
-    public function addProduct($name, $price, $description, $image, $category)
+    public function addProduct($name, $price, $description, $category)
     {
-        $targetDir = "uploads/";
-        $targetFile = $targetDir . basename($image["name"]);
-        if (move_uploaded_file($image["tmp_name"], $targetFile)) {
-            $statement = $this->connection->prepare("INSERT INTO products (name, price, description, image, category) VALUES (:name, :price, :description, :image, :category)");
-            $statement->execute(['name' => $name, 'price' => $price, 'description' => $description, 'image' => $targetFile, 'category' => $category]);
-        } else {
-            throw new Exception("Failed to upload file.");
-        }
+        $statement = $this->connection->prepare("INSERT INTO products (name, price, description, category) VALUES (:name, :price, :description, :category)");
+        $statement->bindParam(':name', $name);
+        $statement->bindParam(':price', $price);
+        $statement->bindParam(':description', $description);
+        $statement->bindParam(':category', $category);
+        $statement->execute();
     }
     public function getCategories(): array
-{
-    $statement = $this->connection->prepare("SELECT id, name FROM category");
-    $statement->setFetchMode(PDO::FETCH_CLASS, Category::class);
-    $statement->execute();
-    return $statement->fetchAll();
-}
+    {
+        $statement = $this->connection->prepare("SELECT id, name FROM category");
+        $statement->setFetchMode(PDO::FETCH_CLASS, Category::class);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+    public function getCategoryById($id)
+    {
+        $statement = $this->connection->prepare("SELECT id, name FROM category WHERE id = :id");
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+        $statement->setFetchMode(PDO::FETCH_CLASS, Category::class);
+        return $statement->fetch();
+    }
+    public function editCategory($id, $name)
+    {
+        $statement = $this->connection->prepare("UPDATE category SET name = :name WHERE id = :id");
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':name', $name);
+        $statement->execute();
+    }
+    public function addCategory($name)
+    {
+        $statement = $this->connection->prepare("INSERT INTO category (name) VALUES (:name)");
+        $statement->bindParam(':name', $name);
+        $statement->execute();
+    }
 
 }

@@ -3,7 +3,6 @@
 <div class="container">
     <a href="/admin" class="btn btn-primary">Back</a>
     <h1 class="text-center">Users</h1>
-    <a href="/admin/catagory/create" class="btn btn-primary">Create</a>
     <table class="table">
         <thead>
             <tr>
