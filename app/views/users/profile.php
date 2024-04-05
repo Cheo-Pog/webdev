@@ -13,7 +13,7 @@
                 <?= $_SESSION['currentUser']->email ?>
             </p>
         <div>
-            <button class="btn btn-primary" id="edit">edit profile</button>
+            <a href="/user/edit" class="btn btn-primary" id="edit">edit profile</a>
         </div>
         </div>
 

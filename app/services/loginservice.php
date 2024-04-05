@@ -13,10 +13,7 @@ class Loginservice{
     public function LoginUser($email, $password) : User | bool
     {
         $user = $this->UserRepository->GetUserByEmail($email);
-        if (!$user) {
-            return false;
-        }
-        if (password_verify($password, $user->password)) {
+        if ($user && password_verify($password, $user->password)) {
             return $user;
         }
         return false;

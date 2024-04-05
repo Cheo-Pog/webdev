@@ -37,10 +37,9 @@ class CartService
         }
         $this->CartRepository->addToCart($productId, $_SESSION['currentUser']->id);
     }
-    public function updateQuantity($orderId, $quantity)
+    public function updateQuantity($id, $quantity)
     {
-        $order = $this->CartRepository->getOrderById($orderId);
-        $this->CartRepository->updateQuantity($order, $quantity);
+        $this->CartRepository->updateQuantity($id, $quantity);
     }
     public function removeFromCart($id)
     {

@@ -13,8 +13,8 @@ class ProductController{
     public function create(){
         require_once __DIR__ . "/../views/products/create.php";
     }
-    public function update($id){
-        require_once __DIR__ . "/../views/products/update.php";
+    public function edit($id){
+        require_once __DIR__ . "/../views/products/edit.php";
     }
         public function delete($id){
         require_once __DIR__ . "/../views/products/delete.php";

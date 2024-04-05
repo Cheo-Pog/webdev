@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 use App\Modules\User;
+use Exception;
 
 class UserService
 {
@@ -13,25 +14,45 @@ class UserService
         $this->UserRepository = new UserRepository;
     }
 
-    public function GetUserByEmail($email) : User | bool
+    public function GetUserByEmail($email): User|bool
     {
         return $this->UserRepository->GetUserByEmail($email);
+    }
+    public function GetUserById($id): User|bool
+    {
+        return $this->UserRepository->GetUserById($id);
     }
     public function GetAllUsers()
     {
         return $this->UserRepository->GetAllUsers();
     }
 
-    public function promoteUser($id)
+    public function editProfile($email, $firstname, $lastname, $Cpassword, $password)
     {
-        $this->UserRepository->promoteUser($id);
+        $user = $this->UserRepository->GetUserByEmail($email);
+        if ($user && password_verify($Cpassword, $user->password)) {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $this->UserRepository->editProfile($email, $firstname, $lastname, $hash);
+            return;
+        }
+        throw new Exception("Invalid password");
     }
-    public function demoteUser($id)
+    public function editProfileNoPassword($email, $firstname, $lastname, $Cpassword)
     {
-        $this->UserRepository->demoteUser($id);
+        $user = $this->UserRepository->GetUserByEmail($email);
+        if ($user && password_verify($Cpassword, $user->password)) {
+            $this->UserRepository->editProfileNoPassword($email, $firstname, $lastname);
+            return;
+        }
+        throw new Exception("Invalid password");
     }
+    public function editUser($id, $firstname, $lastname, $email, $rank)
+    {
+        $this->UserRepository->editUser($id, $firstname, $lastname, $email, $rank);
+    }
+
     public function removeUser($id)
-    {  
-         $this->UserRepository->removeUser($id);
+    {
+        $this->UserRepository->removeUser($id);
     }
 }

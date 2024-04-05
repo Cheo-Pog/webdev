@@ -21,7 +21,7 @@
                         <?php echo $category->name; ?>
                     </td>
                     <td>
-                        <a href="/admin/catagory/update/<?php echo $category->id; ?>" class="btn btn-primary">Edit</a>
+                        <a href="/api/product/edit<?php echo $category->id; ?>" class="btn btn-primary">Edit</a>
                         <a href="/admin/catagory/delete/<?php echo $category->id; ?>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>

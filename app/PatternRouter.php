@@ -14,7 +14,6 @@ class PatternRouter
         $isApi = $baseSegment === 'api';
        
         $isApi ? $controllerNamespace = 'App\\Api\\Controllers\\' : $controllerNamespace = 'App\\Controllers\\';
-
         $isApi ? $controllerName = $controllerNamespace . ucfirst($uriSegments[1]) . 'Controller' : $controllerName = $controllerNamespace . ucfirst($baseSegment) . 'Controller';
         $isApi ? $methodName = $uriSegments[2] ?? 'index' : $methodName = $uriSegments[1] ?? 'index';
 
@@ -25,7 +24,8 @@ class PatternRouter
 
         try {
             $controllerInstance = new $controllerName();
-            $controllerInstance->$methodName();
+            $controllerInstance->$methodName(isset($uriSegments[3]) ? $uriSegments[3] : null);
+
         } catch (Exception) {
             http_response_code(500);
         }

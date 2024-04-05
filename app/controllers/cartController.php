@@ -34,6 +34,28 @@ class CartController
             }
         }
     }
+    public function updateQuantity()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $id = $data['id'];
+            $quantity = $data['quantity'];
+
+            if (!isset($id, $quantity)){
+                http_response_code(400);
+                return;
+            }
+
+            if (isset($_SESSION['currentUser'])) {
+                $this->CartService->updateQuantity($id, $quantity);
+                http_response_code(200);
+                return;
+            } else {
+                http_response_code(401);
+                return;
+            }
+        }
+    }
     public function checkout()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {

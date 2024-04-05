@@ -27,15 +27,19 @@ $subtotal = 0; ?>
                                     €
                                     <?= $item->price ?>
                                 </td>
-                                <td>
-                                    <?= $item->quantity ?>
+                                <td id="<?= $item->price ?>">
+                                    <button value="minus" class="btn btn-primary quantity">-</button>
+                                    <span class="quantity-value">
+                                        <?= $item->quantity ?>
+                                    </span>
+                                    <button value="plus" class="btn btn-primary quantity">+</button>
                                 </td>
                                 <td>
                                     €
                                     <?= $item->totalprice() ?>
                                 </td>
                                 <td>
-                                    <button class="btn btn-danger remove" value="<?= $item->id ?>" id=<?= $item->price ?>>Remove</button>
+                                    <button class="btn btn-danger remove" value="<?= $item->id ?>" id=<?= $item->price * $item->quantity ?>>Remove</button>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -48,10 +52,8 @@ $subtotal = 0; ?>
                 <div class="col-6">
                     <p>Subtotal</p>
                 </div>
-                <div class="col-6" id="subtotal">
-                    <p>€
-                        <?= $subtotal ?>
-                    </p>
+                <div class="col-6" id="subtotal" value=<?= $subtotal ?>>
+                    <p>€<?= $subtotal ?></p>
                 </div>
                 <div class="col-12">
                     <button class="btn btn-primary" id="checkout">Checkout</button>
@@ -62,9 +64,61 @@ $subtotal = 0; ?>
 </div>
 
 <script>
+    let subtotal = parseFloat(<?= $subtotal ?>);
+
     document.getElementById('checkout').addEventListener('click', function () {
         checkout();
     });
+
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('quantity')) {
+            event.preventDefault();
+
+            updateQuantity(event.target);
+        }
+    });
+
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('remove')) {
+            event.preventDefault();
+
+            price = event.target.id;
+            removeFromCart(event.target.value, price);
+        }
+    });
+
+    async function updateQuantity(button) {
+        const type = button.value;
+        const price = button.parentNode.id;
+        const quantityElement = button.parentNode.querySelector('.quantity-value');
+        let quantity = parseInt(quantityElement.textContent); // Get current quantity
+
+        if (type === 'plus') {
+            quantity++;
+            subtotal += parseFloat(price); //doest work otherwise
+        } else if (type === 'minus') {
+            if (quantity < 2) {
+                alert("If you want to remove a product, please press the 'REMOVE' button");
+                return;
+            }
+            quantity--;
+            subtotal -= price;
+        }
+
+        const response = await fetch('/cart/updateQuantity', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: button.parentNode.parentNode.id.split('-')[1],
+                quantity,
+            }),
+        });
+
+        document.getElementById('subtotal').innerHTML = '<p>€' + subtotal.toFixed(2) + '</p>'; // Update subtotal in HTML
+        quantityElement.textContent = quantity; // Update quantity in HTML
+    }
 
     async function checkout() {
         const response = await fetch('/cart/checkout', {
@@ -73,7 +127,7 @@ $subtotal = 0; ?>
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                subtotal: <?= $subtotal ?>
+                subtotal: subtotal
             }),
         });
         if (response.ok) {
@@ -82,15 +136,6 @@ $subtotal = 0; ?>
             alert('cart not checked out');
         }
     }
-
-    document.addEventListener('click', function (event) {
-        if (event.target.classList.contains('remove')) {
-            event.preventDefault();
-            
-            price = event.target.id;
-            removeFromCart(event.target.value, price);
-        }
-    });
 
     async function removeFromCart(id, price) {
         const response = await fetch('/cart/removeFromCart', {
