@@ -16,8 +16,12 @@ class HomeController
     public function index()
     {
         $products = $this->productService->getAllProducts();
-        $randomKeys = array_rand($products, 6);
-        $randomProducts = array_intersect_key($products, array_flip($randomKeys));
+        if (count($products) < 6) {
+            $randomProducts = $products;
+        }else{
+            $randomKeys = array_rand($products, 6);
+            $randomProducts = array_intersect_key($products, array_flip($randomKeys));
+        }
         $_SESSION['categories'] = $this->productService->getCategories();
 
         require __DIR__ . "/../views/home/index.php";

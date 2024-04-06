@@ -52,21 +52,23 @@ class ProductRepository extends Repository
         $statement->execute();
     }
 
-    public function editProduct($id, $name, $price, $description, $category)
+    public function editProduct($id, $name, $price, $image, $description, $category)
     {
-        $statement = $this->connection->prepare("UPDATE products SET name = :name, price = :price, description = :description, category = :category WHERE id = :id");
+        $statement = $this->connection->prepare("UPDATE products SET name = :name, price = :price, image=:image, description = :description, category = :category WHERE id = :id");
         $statement->bindParam(':id', $id);
         $statement->bindParam(':name', $name);
         $statement->bindParam(':price', $price);
+        $statement->bindParam(':image', $image);
         $statement->bindParam(':description', $description);
         $statement->bindParam(':category', $category);
         $statement->execute();
     }
-    public function addProduct($name, $price, $description, $category)
+    public function addProduct($name, $price, $image, $description, $category)
     {
-        $statement = $this->connection->prepare("INSERT INTO products (name, price, description, category) VALUES (:name, :price, :description, :category)");
+        $statement = $this->connection->prepare("INSERT INTO products (name, price, image, description, category) VALUES (:name, :price, :image, :description, :category)");
         $statement->bindParam(':name', $name);
         $statement->bindParam(':price', $price);
+        $statement->bindParam(':image', $image);
         $statement->bindParam(':description', $description);
         $statement->bindParam(':category', $category);
         $statement->execute();

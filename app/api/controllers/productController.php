@@ -27,16 +27,16 @@ class ProductController
             $name = $data['name'];
             $price = $data['price'];
             $description = $data['description'];
-            // $image = $data['image'];
+            $image = $data['image'];
             $category = $data['category'];
 
-            if (!isset($name, $price, $description, $category) || empty($name) || empty($price) || empty($description) || empty($category)) {
+            if (!isset($name, $price ,$description, $category) || empty($name) || empty($price) || empty($description) || empty($category)) {
                 http_response_code(400);
                 return;
             }
 
             try {
-                $this->productService->addProduct($name, $price, $description, $category);
+                $this->productService->addProduct($name, $price, $image, $description, $category);
                 http_response_code(201);
                 return;
             } catch (Exception $e) {
@@ -59,16 +59,16 @@ class ProductController
             $name = $data['name'];
             $price = $data['price'];
             $description = $data['description'];
-            // $image = $data['image'];
+            $image = $data['image'];
             $category = $data['category'];
 
-            if (!isset($name, $price, $description, $category) || empty($name) || empty($price) || empty($description) || empty($category)) {
+            if (!isset($name, $price, $description, $category)  || empty($name) || empty($price) || empty($description) || empty($category)) {
                 http_response_code(400);
                 return;
             }
 
             try {
-                $this->productService->editProduct($id, $name, $price, $description, $category);
+                $this->productService->editProduct($id, $name, $price, $image,$description, $category);
                 http_response_code(200);
                 return;
             } catch (Exception $e) {
