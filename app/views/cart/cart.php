@@ -34,12 +34,12 @@ $subtotal = 0; ?>
                                     </span>
                                     <button value="plus" class="btn btn-primary quantity">+</button>
                                 </td>
-                                <td>
+                                <td id="total-<?= $item->id ?>">
                                     €
                                     <?= $item->totalprice() ?>
                                 </td>
                                 <td>
-                                    <button class="btn btn-danger remove" value="<?= $item->id ?>" id=<?= $item->price * $item->quantity ?>>Remove</button>
+                                    <button class="btn btn-danger remove" value="<?= $item->id ?>">Remove</button>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -83,14 +83,14 @@ $subtotal = 0; ?>
         if (event.target.classList.contains('remove')) {
             event.preventDefault();
 
-            price = event.target.id;
-            removeFromCart(event.target.value, price);
+            removeFromCart(event.target.value);
         }
     });
 
     async function updateQuantity(button) {
         const type = button.value;
         const price = button.parentNode.id;
+        const id = button.parentNode.parentNode.id.split('-')[1];
         const quantityElement = button.parentNode.querySelector('.quantity-value');
         let quantity = parseInt(quantityElement.textContent); // Get current quantity
 
@@ -112,12 +112,13 @@ $subtotal = 0; ?>
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                id: button.parentNode.parentNode.id.split('-')[1],
+                id,
                 quantity,
             }),
         });
 
         document.getElementById('subtotal').innerHTML = '<p>€' + subtotal.toFixed(2) + '</p>'; // Update subtotal in HTML
+        document.getElementById('total-' + id).innerHTML = '<p>€' + (price * quantity).toFixed(2) + '</p>'; // Update subtotal in HTML
         quantityElement.textContent = quantity; // Update quantity in HTML
     }
 
@@ -138,7 +139,8 @@ $subtotal = 0; ?>
         }
     }
 
-    async function removeFromCart(id, price) {
+    async function removeFromCart(id) {
+        const price = document.getElementById('total-' + id).textContent.split('€')[1];
         const response = await fetch('/cart/removeFromCart', {
             method: 'DELETE',
             headers: {
@@ -149,7 +151,8 @@ $subtotal = 0; ?>
             }),
         });
         if (response.ok) {
-            document.getElementById('subtotal').innerHTML = '<p>€' + (<?= $subtotal ?> - price) + '</p>';
+            subtotal -= price;
+            document.getElementById('subtotal').innerHTML = '<p>€' + subtotal.toFixed(2) + '</p>';
             document.getElementById('product-' + id).remove();
         } else {
             alert('product not removed');

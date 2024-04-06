@@ -12,7 +12,8 @@ class UserController{
         require __DIR__ . "/../../views/admin/users/index.php";
     }
     public function create(){
-        require_once __DIR__ . "/../views/products/create.php";
+        $isApi = true;
+        require __DIR__ . "/../../views/logins/register.php";
     }
     public function edit($id){
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {

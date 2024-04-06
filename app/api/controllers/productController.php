@@ -93,6 +93,7 @@ class ProductController
             try {
                 $this->productService->addCategory($name);
                 http_response_code(201);
+                $_SESSION['categories'] = $this->productService->getCategories();
                 return;
             } catch (Exception $e) {
                 http_response_code(500);
@@ -119,6 +120,7 @@ class ProductController
             try {
                 $this->productService->editCategory($id, $name);
                 http_response_code(200);
+                $_SESSION['categories'] = $this->productService->getCategories();
                 return;
             } catch (Exception $e) {
                 http_response_code(500);
@@ -139,6 +141,7 @@ class ProductController
     {
         if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
             $this->productService->removeCategory($id);
+            $_SESSION['categories'] = $this->productService->getCategories();
             http_response_code(200);
             return;
         }

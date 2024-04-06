@@ -3,13 +3,13 @@ github url: https://github.com/Cheo-Pog/webdev
 ## logins
 
 Login admin:
-    - username: Jesse321
-    - password: WEED
+    - email: mr@heisenberg.cool
+    - password: meth
 Login customer:
-    - username: waltuh
-    -password: finger
+    - email: milfHunter@hotmail.com
+    - password: weed
 
-customers logins can be made in the application itself so you dont have to use the one provided.
+customer logins can be made in the application itself so you dont have to use the one provided.
 
 ## Usage
 

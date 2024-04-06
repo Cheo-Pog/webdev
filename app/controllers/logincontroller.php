@@ -19,6 +19,7 @@ class Logincontroller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $isApi = false;
             require_once __DIR__ . "/../views/logins/register.php";
         }
 
@@ -35,13 +36,9 @@ class Logincontroller
             $password = $data['password'];
 
             try {
-                if ($this->loginservice->AddNewLogin($email, $firstname, $lastname, $password)) {
-                    http_response_code(200);
-                    return;
-                } else {
-                    http_response_code(401);
-                    return;
-                }
+                $this->loginservice->AddNewLogin($email, $firstname, $lastname, $password);
+                http_response_code(200);
+                return;
             } catch (Exception $e) {
                 http_response_code(400);
                 return;
