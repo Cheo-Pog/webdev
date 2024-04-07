@@ -4,43 +4,35 @@
     <a href="/admin" class="btn btn-primary">Back</a>
     <h1 class="text-center">Users</h1>
     <a href="/api/user/create" class="btn btn-primary">Create User</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>rank</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $user): ?>
-                <tr id="user-<?= $user->id ?>">
-                    <td>
-                        <?= $user->id; ?>
-                    </td>
-                    <td>
-                        <?= $user->email; ?>
-                    </td>
-                    <td>
-                        <?= $user->firstname; ?>
-                    </td>
-                    <td>
-                        <?= $user->lastname; ?>
-                    </td>
-                    <td>
-                        <?= $user->rank; ?>
-                    </td>
-                    <td>
-                        <a href="/api/user/edit/<?= $user->id; ?>" class="btn btn-primary">Edit</a>
-                        <button value="<?= $user->id ?>" class="btn btn-danger delete">Delete</button>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+    <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Email</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Rank</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user): ?>
+                        <tr id="user-<?= $user->id ?>">
+                            <td><?= $user->id; ?></td>
+                            <td><?= $user->email; ?></td>
+                            <td><?= $user->firstname; ?></td>
+                            <td><?= $user->lastname; ?></td>
+                            <td><?= $user->rank; ?></td>
+                            <td>
+                                <a href="/api/user/edit/<?= $user->id; ?>" class="btn btn-primary">Edit</a>
+                                <button value="<?= $user->id ?>" class="btn btn-danger delete">Delete</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <script>
 

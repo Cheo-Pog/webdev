@@ -3,7 +3,7 @@
     <a href="/admin" class="btn btn-primary">Back</a>
     <h1 class="text-center">Category</h1>
     <a href="/api/product/createCategory" class="btn btn-primary">Create</a>
-    <table class="table">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Id</th>

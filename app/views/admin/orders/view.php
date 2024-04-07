@@ -3,7 +3,7 @@
 <div class="container">
     <a href="/api/order" class="btn btn-primary">Back</a>
     <h1 class="text-center">Order Items</h1>
-    <table class="table">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Id</th>

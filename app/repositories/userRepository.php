@@ -56,14 +56,14 @@ class UserRepository extends Repository{
         $statement->bindParam(':firstname', $firstname);
         $statement->bindParam(':lastname', $lastname);
         $statement->bindParam(':password', $hash);
-        $statement->execute();
+        return $statement->execute();
     }
     public function editProfileNoPassword($email, $firstname, $lastname){
         $statement = $this->connection->prepare("UPDATE users SET email = :email, firstname = :firstname, lastname = :lastname WHERE email = :email");
         $statement->bindParam(':email', $email);
         $statement->bindParam(':firstname', $firstname);
         $statement->bindParam(':lastname', $lastname);
-        $statement->execute();
+        return $statement->execute();
     }
     public function editUser($id, $firstname, $lastname, $email, $rank){
         $statement = $this->connection->prepare("UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, rank = :rank WHERE id = :id");
@@ -73,9 +73,6 @@ class UserRepository extends Repository{
         $statement->bindParam(':email', $email);
         $statement->bindParam(':rank', $rank);
         $statement->execute();
-        if($statement->rowCount() == 0){
-            throw new Exception("User not found");
-        }
     }
     public function removeUser($id){
         $statement = $this->connection->prepare("DELETE FROM users WHERE id = :id");

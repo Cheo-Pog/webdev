@@ -33,7 +33,7 @@ class UserService
         if ($user && password_verify($Cpassword, $user->password)) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $this->UserRepository->editProfile($email, $firstname, $lastname, $hash);
-            return;
+            return $this->UserRepository->GetUserByEmail($email);
         }
         throw new Exception("Invalid password");
     }
@@ -42,7 +42,7 @@ class UserService
         $user = $this->UserRepository->GetUserByEmail($email);
         if ($user && password_verify($Cpassword, $user->password)) {
             $this->UserRepository->editProfileNoPassword($email, $firstname, $lastname);
-            return;
+            return $this->UserRepository->GetUserByEmail($email);
         }
         throw new Exception("Invalid password");
     }

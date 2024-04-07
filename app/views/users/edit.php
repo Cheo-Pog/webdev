@@ -44,6 +44,7 @@ $isApi = str_contains($url, 'api');
     </form>
 </div>
 
+
 <script>
     document.getElementById('profile-form').addEventListener('submit', function (e) {
         e.preventDefault();

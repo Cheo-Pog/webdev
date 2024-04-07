@@ -37,7 +37,8 @@ class UserController
             }
             if (!isset($password) || empty($password)) {
                 try {
-                    $this->userService->editProfileNoPassword($email, $firstname, $lastname, $Cpassword);
+                    $user = $this->userService->editProfileNoPassword($email, $firstname, $lastname, $Cpassword);
+                    $_SESSION['currentUser'] = $user;
                     http_response_code(201);
                     return;
                 } catch (Exception $e) {
@@ -46,7 +47,8 @@ class UserController
                 }
             }
             try {
-                $this->userService->editProfile($email, $firstname, $lastname, $Cpassword, $password);
+                $user = $this->userService->editProfile($email, $firstname, $lastname, $Cpassword, $password);
+                $_SESSION['currentUser'] = $user;
                 http_response_code(200);
                 return;
             } catch (Exception $e) {
